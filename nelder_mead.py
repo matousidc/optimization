@@ -6,7 +6,8 @@ python -m nelder_mead
 import matplotlib.pyplot as plt
 import numpy as np
 
-def rosen(p: list) -> int:              # rosenbrock test function
+# test functions
+def rosen(p: list) -> int:              
     x1, x2 = p
     a = 1
     b = 100
@@ -14,12 +15,24 @@ def rosen(p: list) -> int:              # rosenbrock test function
     return y
 
 
-def anim(u: list, v: list, w: list):        # plotting function
+def booth(p: list) -> int:
+    x1, x2 = p
+    y = (x1 + 2*x2 - 7)**2 + (2*x1 + x2 - 5)**2
+    return y
+
+
+def himmel(p: list) -> int:
+    x1, x2 = p
+    y = (x1**2 + x2 - 11)**2 + (x1 + x2**2 - 7)**2
+    return y
+
+
+def anim(u: list, v: list, w: list, func):        # plotting function
     x1 = np.arange(-5, 5, 0.1)
     x2 = np.arange(-5, 5, 0.1)
     x1, x2 = np.meshgrid(x1, x2)
     ax = plt.axes()
-    return ax.imshow(rosen([x1, x2]), origin='lower', extent=[-5, 5, -5, 5], vmax=1000), \
+    return ax.imshow(func([x1, x2]), origin='lower', extent=[-5, 5, -5, 5], vmax=1000), \
            ax.plot([u[0], v[0]], [u[1], v[1]], color='black', linewidth=2), \
            ax.plot([v[0], w[0]], [v[1], w[1]], color='black', linewidth=2), \
            ax.plot([u[0], w[0]], [u[1], w[1]], color='black', linewidth=2)
@@ -29,7 +42,7 @@ def anim(u: list, v: list, w: list):        # plotting function
 def algo(points: list, func):
     u, v, w = points
     check = 1
-    anim(u, v, w)
+    anim(u, v, w, func)
     plt.pause(1)
     plt.clf()
     while check == 1:
@@ -64,7 +77,7 @@ def algo(points: list, func):
         #     check = 0
         if min([np.sqrt((x[0] - y[0]) ** 2 + (x[1] - y[0]) ** 2) for x, y in zip([u, v, w], [w, u, v])]) < 0.05:
             check = 0  # size of simplex convergence
-        anim(u, v, w)
+        anim(u, v, w, func)
         plt.pause(0.4)
         plt.clf()
         # print('f(x):', [func(x) for x in [u, v, w]])
