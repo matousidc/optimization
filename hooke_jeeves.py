@@ -27,7 +27,7 @@ def himmel(p: list) -> int:
     return y
   
   
-  # hooke-jeeves 2D
+# hooke-jeeves 2D
 def search(p: list, step: int, values: list, fun):
     i = 1
     p_c = p.copy()
